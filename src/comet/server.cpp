@@ -270,6 +270,7 @@ int Server::pub(struct evhttp_request *req, bool encoded){
 	}
 		
 	// response to publisher
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/javascript; charset=utf-8");
 	struct evbuffer * buf = evhttp_request_get_output_buffer(req);
 	if(cb){
@@ -347,7 +348,8 @@ int Server::sign(struct evhttp_request *req){
 			cname.c_str(), channel->token.c_str(), expires);
 	}
 	channel->idle = expires/CHANNEL_CHECK_INTERVAL;
-
+    
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
 	if(cb){
@@ -373,7 +375,8 @@ int Server::sign(struct evhttp_request *req){
 int Server::close(struct evhttp_request *req){
 	HttpQuery query(req);
 	std::string cname = query.get_str("cname", "");
-
+    
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
 
@@ -399,6 +402,7 @@ int Server::clear(struct evhttp_request *req){
 	HttpQuery query(req);
 	std::string cname = query.get_str("cname", "");
 
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
 
@@ -423,6 +427,7 @@ int Server::info(struct evhttp_request *req){
 	HttpQuery query(req);
 	std::string cname = query.get_str("cname", "");
 
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
 	if(!cname.empty()){
@@ -448,6 +453,7 @@ int Server::check(struct evhttp_request *req){
 	HttpQuery query(req);
 	std::string cname = query.get_str("cname", "");
 
+    evhttp_add_header(req->output_headers, "Access-Control-Allow-Origin", "*");
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
